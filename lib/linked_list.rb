@@ -9,47 +9,60 @@ class LinkedList
     @tail = @list[-1]
   end
 
-  # It will add a new Node to the end of the list
+  # This will add a new Node to the end of the linked list
   def apprend(value)
-    prepend(value)
+    @list << Node.new(value)
+    @list[-2].next_node = @list[-1] if @list.size > 1
     @tail = @list[-1]
   end
 
-  # It will add a new Node to the beginning of the list
+  # This will add a new Node to the beginning of the linked list
   def prepend(value)
-    @list << Node.new(value)
+    @list.insert(0, Node.new(value))
+    prev_head = @list[1]
+    @list[0].next_node = prev_head if @list.size > 1
     @head = @list[0]
   end
 
+  # This will get the accurate size of the current linked list
   def size
     @list.size
   end
 
-  # It will automatically sets a head node if the list has a valid one
+  # This will automatically sets a head node if the linked list has a valid node to do
   def head
-    @head
+    @head = @list[0]
   end
 
-  # It will automatically sets a tail node if the list has a valid one
+  # This will automatically sets a tail node if the linked list has a valid node to do
   def tail
-    @tail
+    @tail = @list[-1]
   end
 
+  # This will display a Node element by entering it's index within the linked list
   def at(index)
     @list[index]
   end
 
+  # This will delete the last element from the linked list
   def pop
-    @list.pop
-    tail
+    p @list.pop
   end
 
+  # This will return a boolean value (true/false) depending on the given value's presentence in the linked list
   def contains?(value)
+    # until element.include?(value)
+    #  @list.count do |element|
+    #    p element.include?(value)
+    #  end
+    # end
   end
 
+  # This will find the given value's index position within it's linked list
   def find(value)
   end
 
+  # This will give a more organized and cleaner look to represent a linked list in Ruby
   def to_s
   end
 end
@@ -59,12 +72,10 @@ Node = Struct.new(:value, :next_node)
 
 # For debugging purposes
 random_list = LinkedList.new
-p random_list.head
 p random_list.apprend('Alice')
-p random_list.tail
 p random_list.apprend('Jeanne')
-p random_list.head
-p random_list.tail
+p random_list.prepend('Elise')
+p random_list
 
 #node1 = Node.new # To test Node.value's storage capability
 #p node1.value
