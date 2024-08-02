@@ -1,4 +1,7 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
+
+## The building block for any linked list
+Node = Struct.new(:value, :next_node)
 
 ## To represent the missing linked list class for Ruby
 class LinkedList
@@ -51,51 +54,35 @@ class LinkedList
 
   # This will return a boolean value (true/false) depending on the given value's presentence in the linked list
   def contains?(value)
-    # until element.include?(value)
-    #  @list.count do |element|
-    #    p element.include?(value)
-    #  end
-    # end
+    @list.count do |element|
+      return true if element[:value] == value
+    end
+    false
   end
 
   # This will find the given value's index position within it's linked list
   def find(value)
+    @list.count do |element|
+      return @list.index(element) if element.include?(value)
+    end
+    nil
   end
 
   # This will give a more organized and cleaner look to represent a linked list in Ruby
   def to_s
+    display = ''
+    @list.count do |element|
+      display << "( #{element[:value]} ) -> "
+    end
+    display << 'nil'
   end
 end
-
-## The building block for any linked list
-Node = Struct.new(:value, :next_node)
 
 # For debugging purposes
 random_list = LinkedList.new
 p random_list.apprend('Alice')
 p random_list.apprend('Jeanne')
 p random_list.prepend('Elise')
-p random_list
-
-#node1 = Node.new # To test Node.value's storage capability
-#p node1.value
-#node1.value = 'Hello'
-#p node1.value
-
-#node2 = Node.new("It's me") # For testing out LinkedList connectivity
-#node3 = Node.new('Profiremu23')
-#node4 = Node.new("I'm in Spain without the S")
-
-#node1.next_node = node2
-#node2.next_node = node3
-#node3.next_node = node4
-
-#p node1.next_node.value
-#p node2.next_node.value
-#p node3.next_node.value
-#p node4.next_node
-#p node1.next_node.next_node.next_node.value
-#p node1
-#a = []
-#a << node1
-#p a
+puts random_list
+p random_list.find('Jeanne')
+p random_list.at(2)
