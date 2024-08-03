@@ -15,16 +15,27 @@ class LinkedList
   # This will add a new Node to the end of the linked list
   def apprend(value)
     @list << Node.new(value)
-    @list[-2].next_node = @list[-1] if @list.size > 1
-    @tail = @list[-1]
+    @list[-2].next_node = @list[-1][:value] if @list.size > 1
+    @tail = @list[-1][:value]
   end
 
   # This will add a new Node to the beginning of the linked list
   def prepend(value)
     @list.insert(0, Node.new(value))
-    prev_head = @list[1]
-    @list[0].next_node = prev_head if @list.size > 1
-    @head = @list[0]
+    @list[0].next_node = @list[1][:value] if @list.size > 1
+    @head = @list[0][:value]
+  end
+
+  def insert_at(index, value)
+    @list.insert(index, Node.new(value))
+    @list[index - 1].next_node = @list[index][:value] if @list[index - 1].nil? == false
+    @list[index].next_node = @list[index + 1][:value] if @list[index + 1].nil? == false
+  end
+
+  def remove_at(index)
+    @list.delete_at(index)
+    @list[index - 1].next_node = @list[index][:value] if @list[index - 1].nil? == false
+    @list[index].next_node = @list[index + 1][:value] if @list[index + 1].nil? == false
   end
 
   # This will get the accurate size of the current linked list
@@ -34,12 +45,12 @@ class LinkedList
 
   # This will automatically sets a head node if the linked list has a valid node to do
   def head
-    @head = @list[0]
+    @head = @list[0][:value]
   end
 
   # This will automatically sets a tail node if the linked list has a valid node to do
   def tail
-    @tail = @list[-1]
+    @tail = @list[-1][:value]
   end
 
   # This will display a Node element by entering it's index within the linked list
@@ -77,12 +88,3 @@ class LinkedList
     display << 'nil'
   end
 end
-
-# For debugging purposes
-random_list = LinkedList.new
-p random_list.apprend('Alice')
-p random_list.apprend('Jeanne')
-p random_list.prepend('Elise')
-puts random_list
-p random_list.find('Jeanne')
-p random_list.at(2)
