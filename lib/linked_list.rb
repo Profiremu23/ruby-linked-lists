@@ -1,91 +1,123 @@
 # frozen_string_literal: false
 
 ## The building block for any linked list
-Node = Struct.new(:value, :next_node)
+Node = Struct.new(:key, :next_node)
 
 ## To represent the missing linked list class for Ruby
 class LinkedList
   # Some constant variables for the linked list to work
   def initialize
-    @head = []
-    @head_value = @head[0]
-    @tail_value = @head[-1]
+    @head = nil
   end
 
   # This will add a new Node to the end of the linked list
-  def apprend(value)
-    p @head << Node.new(value)
-    @head[-2].next_node = @head[-1][:value] if @head.size > 1
-    @head_value = @head[0][:value]
-    @tail_value = @head[-1][:value]
+  def apprend(key)
+    if @head.nil?
+      @head = Node.new(key)
+    else
+      current = @head
+      current = current.next_node until current.next_node.nil?
+      p current.next_node = Node.new(key)
+    end
   end
 
   # This will add a new Node to the beginning of the linked list
-  def prepend(value)
-    p @head.insert(0, Node.new(value))
-    @head[0].next_node = @head[1][:value] if @head.size > 1
-    @head_value = @head[0][:value]
-    @tail_value = @head[-1][:value]
+  def prepend(key)
+    p @head = Node.new(key, @head)
   end
 
-  def insert_at(index, value)
-    p @head.insert(index, Node.new(value))
-    @head[index - 1].next_node = @head[index][:value] if @head[index - 1].nil? == false
-    @head[index].next_node = @head[index + 1][:value] if @head[index + 1].nil? == false
+  # This will insert a Node at a given index within the linked list
+  def insert_at(index, key)
+    current = @head
+    (index - 1).times do
+      current = current.next_node
+    end
+    p current.next_node = Node.new(key, current.next_node)
   end
 
+  # This will remove a Node at a given index within the linked list
   def remove_at(index)
-    p @head.delete_at(index)
-    @head[index - 1].next_node = @head[index][:value] if @head[index - 1].nil? == false
-    @head[index].next_node = @head[index + 1][:value] if @head[index + 1].nil? == false
+    current = @head
+    (index - 1).times do
+      current = current.next_node
+    end
+    p current.next_node = current.next_node.next_node
   end
 
   # This will get the accurate size of the current linked list
   def size
-    p @head.size
+    current = @head
+    index = 0
+
+    until current.nil?
+      index += 1 unless current.nil?
+      current = current.next_node
+    end
+
+    p index
   end
 
   # This will return the head node's value
   def head
-    p @head_value
+    p @head
   end
 
   # This will return the tail node's value
   def tail
-    p @tail_value
+    current = @head
+    (@head.size - 2).times do
+      current = current.next_node
+    end
+    p current
   end
 
   # This will display a Node element by entering it's index within the linked list
   def at(index)
-    p @head[index]
+    current = @head
+    index.times do
+      current = current.next_node
+    end
+    p current
   end
 
   # This will delete the last element from the linked list
   def pop
-    p @head.pop
+    current = @head
+    (@head.size - 2).times do
+      current = current.next_node
+    end
+    p current.next_node = nil
   end
 
-  # This will return a boolean value (true/false) depending on the given value's presentence in the linked list
-  def contains?(value)
-    @head.count do |element|
-      return p true if element[:value] == value
+  # This will return a boolean value (true/false) depending on the given key's presentence in the linked list
+  def contains?(key)
+    current = @head
+    (@head.size - 1).times do
+      current = current.next_node
+      return true if current.key == key
     end
     p false
   end
 
   # This will find the given value's index position within it's linked list
-  def find(value)
-    @head.count do |element|
-      return p @head.index(element) if element.include?(value)
+  def find(key)
+    current = @head
+    index = 0
+    @head.size.times do
+      current = current.next_node
+      index += 1
+      return index if current.key == key
     end
     p nil
   end
 
-  # This will give a more organized and cleaner look to represent a linked list in Ruby
+  # This will give the linked list a more organized and cleaner look when printed to the terminal
   def to_s
+    current = @head
     display = ''
-    @head.count do |element|
-      display << "( #{element[:value]} ) -> "
+    @head.size.times do
+      display << "( #{current.key} ) -> "
+      current = current.next_node
     end
     display << 'nil'
   end
