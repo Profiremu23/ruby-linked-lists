@@ -65,10 +65,8 @@ class LinkedList
   # This will return the tail node's value
   def tail
     current = @head
-    (@head.size - 2).times do
-      current = current.next_node
-    end
-    p current
+    current = current.next_node until current.next_node.nil?
+    current
   end
 
   # This will display a Node element by entering it's index within the linked list
@@ -83,18 +81,18 @@ class LinkedList
   # This will delete the last element from the linked list
   def pop
     current = @head
-    (@head.size - 2).times do
-      current = current.next_node
-    end
-    p current.next_node = nil
+    current = current.next_node until current.next_node.next_node.nil?
+    p current.next_node
+    current.next_node = nil
   end
 
   # This will return a boolean value (true/false) depending on the given key's presentence in the linked list
   def contains?(key)
     current = @head
-    (@head.size - 1).times do
-      current = current.next_node
+    until current.nil?
       return true if current.key == key
+      
+      current = current.next_node
     end
     p false
   end
@@ -103,10 +101,11 @@ class LinkedList
   def find(key)
     current = @head
     index = 0
-    @head.size.times do
+    until current.nil?
+      return index if current.key == key
+
       current = current.next_node
       index += 1
-      return index if current.key == key
     end
     p nil
   end
@@ -115,7 +114,7 @@ class LinkedList
   def to_s
     current = @head
     display = ''
-    @head.size.times do
+    until current.nil?
       display << "( #{current.key} ) -> "
       current = current.next_node
     end
